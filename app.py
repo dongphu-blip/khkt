@@ -76,16 +76,6 @@ st.markdown("""
         </p>
     </div>
 """, unsafe_allow_html=True)
-# Khung tiêu đề dự án KHKT
-st.markdown("""
-    <div class="header-box">
-        <h2 style="margin:0; font-size: 26px;">🧠  NGHIÊN CỨU TÁC ĐỘNG CỦA VIDEO NGẮN</h2>
-        <p style="margin:8px 0 0 0; opacity: 0.95; font-size: 15px;">
-            Đo lường mức độ ảnh hưởng đến khả năng chú ý và thói quen trì hoãn học tập • THPT Đồng Phú
-        </p>
-    </div>
-""", unsafe_allow_html=True)
-
 menu = st.sidebar.radio("📌 Điều hướng hệ thống:", [
     "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)",
     "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)",
