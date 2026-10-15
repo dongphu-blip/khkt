@@ -44,16 +44,18 @@ menu = st.sidebar.radio("📌 Chọn chức năng:", [
 if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
     st.info("🔒 Khảo sát ẩn danh phục vụ nghiên cứu KHKT. Bạn vui lòng đối chiếu mục Screen Time / Digital Wellbeing trên điện thoại để điền dữ liệu chính xác nhất!")
     
-    with st.form("survey_form"):
-        st.subheader("I. Thông tin học sinh")
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            grade = st.selectbox("1. Khối học:", list(CLASSES_BY_GRADE.keys()))
-        with c2:
-            classroom = st.selectbox("2. Lớp học:", CLASSES_BY_GRADE[grade])
-        with c3:
-            gender = st.selectbox("3. Giới tính:", ["Nam", "Nữ"])
+    # ĐẶT NGOÀI FORM ĐỂ CẬP NHẬT LỚP TỨC THÌ THEO KHỐI
+    st.subheader("I. Thông tin học sinh")
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        grade = st.selectbox("1. Khối học:", list(CLASSES_BY_GRADE.keys()), key="survey_grade")
+    with c2:
+        classroom = st.selectbox("2. Lớp học:", CLASSES_BY_GRADE[grade], key="survey_class")
+    with c3:
+        gender = st.selectbox("3. Giới tính:", ["Nam", "Nữ"])
 
+    # CÁC CÂU HỎI BÊN DƯỚI ĐẶT TRONG FORM
+    with st.form("survey_form"):
         st.markdown("---")
         st.subheader("II. Thói quen sử dụng Video ngắn (TikTok, Reels, Shorts)")
         
@@ -135,14 +137,15 @@ elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
     st.subheader("📋 Nhật Ký Can Thiệp Hành Vi 21 Ngày")
     st.info("Khu vực ghi nhận nhật ký hàng ngày của học sinh tham gia thực nghiệm 5 biện pháp.")
     
+    # ĐẶT NGOÀI FORM ĐỂ CẬP NHẬT LỚP TỨC THÌ
+    col_t1, col_t2 = st.columns(2)
+    with col_t1:
+        t_grade = st.selectbox("Khối:", list(CLASSES_BY_GRADE.keys()), key="tracker_grade")
+    with col_t2:
+        t_class = st.selectbox("Lớp:", CLASSES_BY_GRADE[t_grade], key="tracker_class")
+        
     with st.form("tracker_form"):
-        col_t1, col_t2 = st.columns(2)
-        with col_t1:
-            t_grade = st.selectbox("Khối:", list(CLASSES_BY_GRADE.keys()))
-        with col_t2:
-            t_class = st.selectbox("Lớp:", CLASSES_BY_GRADE[t_grade])
-            
-        student_code = st.text_input("Mã số học sinh (hoặc Tên viết tắt để đối chiếu trước - sau):", placeholder="Ví dụ: 10TN1_01")
+        student_code = st.text_input("Mã số học sinh (hoặc Tên viết tắt):", placeholder="Ví dụ: 10TN1_01")
         day_num = st.number_input("Hôm nay là Ngày thứ mấy trong đợt can thiệp (1 - 21)?", min_value=1, max_value=21, value=1)
         
         st.markdown("##### 5 Biện pháp đã thực hiện hôm nay:")
@@ -246,7 +249,6 @@ else:
                     st.markdown("##### 📋 Bảng dữ liệu khảo sát chi tiết:")
                     st.dataframe(df_s, use_container_width=True, hide_index=True)
                     
-                    # Nút tải file CSV dữ liệu thực tế
                     csv_down = df_s.to_csv(index=False, encoding="utf-8-sig").encode("utf-8-sig")
                     st.download_button(
                         "📥 Tải Toàn Bộ File Dữ Liệu Khảo Sát Thực Tế (.CSV)",
@@ -271,7 +273,6 @@ else:
                 else:
                     st.markdown(f"#### Tổng số lượt ghi nhật ký can thiệp: **{total_logs} lượt**")
                     
-                    # Biểu đồ đường xu hướng thời gian xem và thời gian tập trung theo ngày
                     trend_df = df_t.groupby("Day")[["Minutes_Spent", "Max_Focus_Minutes"]].mean().reset_index()
                     
                     fig_trend = go.Figure()
