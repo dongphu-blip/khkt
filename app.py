@@ -147,17 +147,17 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
         st.subheader("III. Đo lường sức bền chú ý & Hành vi trì hoãn học tập")
         st.caption("Thang điểm: 1 = Rất hiếm khi | 5 = Rất thường xuyên")
         
-        p1 = st.slider("9. Em cảm thấy rất khó tập trung học bài hoặc giải bài tập quá 20 phút liên tục:", 1, 5, 3)
-        p2 = st.slider("10. Khi đang học, em cảm thấy bồn chồn và luôn muốn với tay lấy điện thoại:", 1, 5, 3)
-        p3 = st.slider("11. Em thường trì hoãn việc làm bài tập về nhà ('nước đến chân mới nhảy'):", 1, 5, 3)
-        p4 = st.slider("12. Việc lướt clip làm gián đoạn khiến em tốn gấp đôi thời gian làm bài:", 1, 5, 3)
+        p1 = st.slider("9. Bạn cảm thấy rất khó tập trung học bài hoặc giải bài tập quá 20 phút liên tục:", 1, 5, 3)
+        p2 = st.slider("10. Khi đang học, Bạn cảm thấy bồn chồn và luôn muốn với tay lấy điện thoại:", 1, 5, 3)
+        p3 = st.slider("11. Bạn thường trì hoãn việc làm bài tập về nhà ('nước đến chân mới nhảy'):", 1, 5, 3)
+        p4 = st.slider("12. Việc lướt clip làm gián đoạn khiến bạn tốn gấp đôi thời gian làm bài:", 1, 5, 3)
         
         attention_drop = st.selectbox(
-            "13. Đánh giá của em về khả năng tập trung hiện tại so với 1 năm trước:",
+            "13. Đánh giá của bạn về khả năng tập trung hiện tại so với 1 năm trước:",
             ["Thấy bị giảm sút rõ rệt", "Vẫn giữ nguyên", "Tốt hơn trước"]
         )
         control_tried = st.selectbox(
-            "14. Em đã từng thử kiểm soát hoặc giảm thời gian xem video ngắn chưa?",
+            "14. Bạn đã từng thử kiểm soát hoặc giảm thời gian xem video ngắn chưa?",
             ["Đã thử nhiều lần nhưng thất bại (tái nghiện)", "Thành công một phần", "Chưa bao giờ có ý định kiểm soát"]
         )
         st.markdown('</div>', unsafe_allow_html=True)
