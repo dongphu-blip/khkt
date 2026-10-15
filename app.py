@@ -76,6 +76,19 @@ st.markdown("""
         </p>
     </div>
 """, unsafe_allow_html=True)
+# --- CHÈN HÌNH ẢNH / LOGO VÀO THANH ĐIỀU HƯỚNG (SIDEBAR) ---
+st.sidebar.image(
+    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", # Icon học đường & công nghệ sắc nét
+    width=100
+)
+st.sidebar.markdown("""
+    <div style="margin-bottom: 15px;">
+        <h4 style="margin: 0; color: #1e3a8a; font-weight: 700;">THPT ĐỒNG PHÚ</h4>
+        <p style="margin: 0; font-size: 12px; color: #64748b;">Nghiên Cứu KHKT 2026 - 2027</p>
+    </div>
+""", unsafe_allow_html=True)
+
+# Menu lựa chọn
 menu = st.sidebar.radio("📌 Điều hướng hệ thống:", [
     "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)",
     "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)",
