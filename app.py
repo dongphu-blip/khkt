@@ -55,8 +55,9 @@ CLASSES_BY_GRADE = {
 }
 
 # Hiển thị Banner trường học ở góc trên đầu trang
-if os.path.exists("banner_dongphu.jpg"):
-    st.image("banner_dongphu.jpg", use_container_width=True)
+banner_path = "banner_dongphu.jpg"
+if os.path.exists(banner_path):
+    st.image(banner_path, use_container_width=True)
 else:
     # Dự phòng hiển thị logo & ảnh giáo dục chất lượng cao nếu chưa upload banner
     st.image("https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&auto=format&fit=crop&q=80", use_container_width=True)
