@@ -29,7 +29,7 @@ st.markdown("""
 
 DATA_SURVEY_FILE = "khao_sat_thuc_te_hs.csv"
 DATA_TRACKER_FILE = "can_thiep_thuc_te_21_ngay.csv"
-RESEARCH_PWD = "thptdongphu2026"
+RESEARCH_PWD = "dongphu2026"
 
 # Danh mục 33 lớp chuẩn xác theo phân ban TN và XH
 CLASSES_BY_GRADE = {
@@ -45,7 +45,7 @@ st.sidebar.image(
 )
 st.sidebar.markdown("""
     <div style="margin-bottom: 15px; margin-top: 5px;">
-        <h4 style="margin: 0; color: #1e3a8a; font-weight: 700; font-size: 17px;">THPT ĐỒNG PHÚ</h4>
+        <h4 style="margin: 0; color: #1e3a8a; font-weight: 700; font-size: 17px;">TRƯỜNG THPT ĐỒNG PHÚ</h4>
         <p style="margin: 2px 0 0 0; font-size: 12px; color: #64748b;">Nghiên Cứu KHKT 2026 - 2027</p>
     </div>
 """, unsafe_allow_html=True)
@@ -73,7 +73,7 @@ st.markdown("""
             background: rgba(255, 255, 255, 0.15);
             padding: 4px 14px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 20px;
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
