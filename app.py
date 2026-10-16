@@ -11,10 +11,56 @@ st.set_page_config(
     page_icon="🎓",
     layout="wide"
 )
+
+# 2. Tinh chỉnh CSS thẩm mỹ cao
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    html, body, [class*="css"] {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    div.stButton > button:first-child {
+        border-radius: 8px;
+        font-weight: 600;
+        height: 48px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+DATA_SURVEY_FILE = "khao_sat_thuc_te_hs.csv"
+DATA_TRACKER_FILE = "can_thiep_thuc_te_21_ngay.csv"
+RESEARCH_PWD = "thptdongphu2026"
+
+# Danh mục 33 lớp chuẩn xác theo phân ban TN và XH
+CLASSES_BY_GRADE = {
+    "Khối 10": [f"10TN{i}" for i in range(1, 6)] + [f"10XH{i}" for i in range(1, 6)],
+    "Khối 11": [f"11TN{i}" for i in range(1, 5)] + [f"11XH{i}" for i in range(1, 8)],
+    "Khối 12": [f"12TN{i}" for i in range(1, 7)] + [f"12XH{i}" for i in range(1, 7)]
+}
+
+# --- THANH ĐIỀU HƯỚNG BÊN TRÁI (SIDEBAR) ---
+st.sidebar.image(
+    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+    width=90
+)
+st.sidebar.markdown("""
+    <div style="margin-bottom: 15px; margin-top: 5px;">
+        <h4 style="margin: 0; color: #1e3a8a; font-weight: 700; font-size: 17px;">THPT ĐỒNG PHÚ</h4>
+        <p style="margin: 2px 0 0 0; font-size: 12px; color: #64748b;">Nghiên Cứu KHKT 2026 - 2027</p>
+    </div>
+""", unsafe_allow_html=True)
+
+menu = st.sidebar.radio("📌 Điều hướng hệ thống:", [
+    "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)",
+    "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)",
+    "📊 3. Báo Cáo & Phân Tích Dữ Liệu Thực Tế (Ban Nghiên Cứu)"
+])
+
+# Banner chính theo thiết kế chuẩn KHKT
 st.markdown("""
     <div style="
         background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #06b6d4 100%);
-        padding: 30px 24px;
+        padding: 28px 24px;
         border-radius: 16px;
         color: white;
         text-align: center;
@@ -37,19 +83,18 @@ st.markdown("""
         ">
             🏛️ SỞ GD&ĐT ĐỒNG NAI • TRƯỜNG THPT ĐỒNG PHÚ
         </div>
-        <h1 style="
+        <h2 style="
             margin: 0;
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 800;
             color: #ffffff;
             line-height: 1.35;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         ">
             🧠 NGHIÊN CỨU TÁC ĐỘNG CỦA THÓI QUEN TIÊU THỤ VIDEO NGẮN<br>
-            <span style="color: #67e8f9; font-size: 21px;">ĐẾN KHẢ NĂNG DUY TRÌ CHÚ Ý VÀ HÀNH VI TRÌ HOÃN HỌC TẬP</span>
-        </h1>
+            <span style="color: #67e8f9; font-size: 20px;">ĐẾN KHẢ NĂNG DUY TRÌ CHÚ Ý VÀ HÀNH VI TRÌ HOÃN HỌC TẬP</span>
+        </h2>
         <p style="
-            margin: 12px auto 16px auto;
+            margin: 10px auto 14px auto;
             max-width: 820px;
             font-size: 14px;
             color: #f1f5f9;
@@ -58,7 +103,7 @@ st.markdown("""
         ">
             Hệ thống số hóa thu thập dữ liệu thực nghiệm & đánh giá hiệu quả giải pháp can thiệp hành vi 21 ngày
         </p>
-        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
             <span style="background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;">
                 📊 Lĩnh vực: Khoa học Xã hội & Hành vi
             </span>
@@ -71,101 +116,102 @@ st.markdown("""
         </div>
     </div>
 """, unsafe_allow_html=True)
-DATA_SURVEY_FILE = "khao_sat_thuc_te_hs.csv"
-DATA_TRACKER_FILE = "can_thiep_thuc_te_21_ngay.csv"
-RESEARCH_PWD = "thptdongphu2026"
 
-CLASSES_BY_GRADE = {
-    "Khối 10": [f"10TN{i}" for i in range(1, 6)] + [f"10XH{i}" for i in range(1, 6)],
-    "Khối 11": [f"11TN{i}" for i in range(1, 5)] + [f"11XH{i}" for i in range(1, 8)],
-    "Khối 12": [f"12TN{i}" for i in range(1, 7)] + [f"12XH{i}" for i in range(1, 7)]
-}
-
-# --- CHÈN HÌNH ẢNH / LOGO VÀO THANH ĐIỀU HƯỚNG (SIDEBAR) ---
-st.sidebar.image(
-    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", # Icon học đường & công nghệ sắc nét
-    width=100
-)
-st.sidebar.markdown("""
-    <div style="margin-bottom: 15px;">
-        <h4 style="margin: 0; color: #1e3a8a; font-weight: 700;">THPT ĐỒNG PHÚ</h4>
-        <p style="margin: 0; font-size: 12px; color: #64748b;">Nghiên Cứu KHKT 2026 - 2027</p>
-    </div>
-""", unsafe_allow_html=True)
-
-# Menu lựa chọn
-menu = st.sidebar.radio("📌 Điều hướng hệ thống:", [
-    "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)",
-    "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)",
-    "📊 3. Báo Cáo & Phân Tích Dữ Liệu Thực Tế (Ban Nghiên Cứu)"
-])
-
-# ================= TAB 1: PHIẾU KHẢO SÁT =================
+# ================= TAB 1: PHIẾU KHẢO SÁT HỌC SINH =================
 if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
-    st.info("🔒 Khảo sát ẩn danh phục vụ nghiên cứu KHKT. Bạn vui lòng đối chiếu mục Screen Time / Digital Wellbeing trên điện thoại để điền dữ liệu chính xác nhất!")
+    st.info("🔒 Toàn bộ câu trả lời của các bạn đều được ẩn danh hoàn toàn và chỉ sử dụng cho mục đích thống kê khoa học. Rất mong các bạn dành 5 phút trả lời thật khách quan, chính xác!")
 
-    # Cột thông tin học sinh (ngoài form để cập nhật lớp tức thì)
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.subheader("I. Thông tin học sinh")
+    st.subheader("PHẦN I: THÔNG TIN CHUNG")
     c1, c2, c3 = st.columns(3)
     with c1:
-        grade = st.selectbox("1. Khối học:", list(CLASSES_BY_GRADE.keys()), key="survey_grade")
+        grade = st.selectbox("Câu 1. Bạn hiện đang là học sinh khối nào?", list(CLASSES_BY_GRADE.keys()), key="survey_grade")
     with c2:
-        classroom = st.selectbox("2. Lớp học:", CLASSES_BY_GRADE[grade], key="survey_class")
+        classroom = st.selectbox("Câu 2. Bạn đang học lớp nào?", CLASSES_BY_GRADE[grade], key="survey_class")
     with c3:
-        gender = st.selectbox("3. Giới tính:", ["Nam", "Nữ"])
-    st.markdown('</div>', unsafe_allow_html=True)
+        gender = st.selectbox("Câu 3. Giới tính của bạn:", ["Nam", "Nữ"])
+
+    st.markdown("---")
 
     with st.form("survey_form"):
-        st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.subheader("II. Thói quen sử dụng Video ngắn (TikTok, Reels, Shorts)")
+        st.subheader("PHẦN II: THỰC TRẠNG THÓI QUEN SỬ DỤNG VIDEO NGẮN")
         
-        col_q1, col_img1 = st.columns([3, 2])
-        with col_q1:
-            platforms = st.multiselect(
-                "4. Các nền tảng bạn thường dùng để xem video ngắn:",
-                ["TikTok", "Facebook Reels", "YouTube Shorts", "Nền tảng khác"]
-            )
-            time_spent = st.selectbox(
-                "5. Thời gian trung bình mỗi ngày dành để xem video ngắn (theo Screen Time):",
-                ["Dưới 30 phút", "30 phút – dưới 1 giờ", "1 – dưới 2 giờ", "2 – 3 giờ", "Trên 3 giờ"]
-            )
-            view_times = st.multiselect(
-                "6. Bạn thường xem video ngắn vào thời điểm nào trong ngày?",
-                ["Buổi tối trước khi đi ngủ", "Xen kẽ khi đang ngồi tự học ở nhà", "Giờ giải lao tại trường", "Ngay khi vừa thức dậy buổi sáng"]
-            )
-        with col_img1:
-            st.image("https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500&auto=format&fit=crop&q=80", 
-                     caption="Cơ chế kích thích liên tục của các nền tảng video ngắn", use_container_width=True)
-
+        platforms = st.multiselect(
+            "Câu 4. Nền tảng nào bạn thường xuyên sử dụng nhất để xem video ngắn (dưới 60 giây)? (Có thể chọn nhiều đáp án):",
+            ["TikTok", "Facebook Reels", "YouTube Shorts", "Instagram Reels", "Nền tảng khác"],
+            default=["TikTok"]
+        )
+        
+        time_spent = st.selectbox(
+            "Câu 5. Mở cài đặt điện thoại của bạn (mục 'Thời gian sử dụng / Screen Time' hoặc 'Digital Wellbeing'), tổng thời gian trung bình mỗi ngày bạn dành cho các app video ngắn là bao nhiêu?",
+            ["Dưới 30 phút/ngày", "Từ 30 phút đến dưới 1 giờ/ngày", "Từ 1 giờ đến dưới 2 giờ/ngày", "Từ 2 giờ đến 3 giờ/ngày", "Trên 3 giờ/ngày"]
+        )
+        
+        view_times = st.multiselect(
+            "Câu 6. Thời điểm nào trong ngày bạn thường xem video ngắn nhất? (Có thể chọn nhiều đáp án):",
+            [
+                "Buổi sáng ngay khi vừa thức dậy",
+                "Trong giờ ra chơi, giải lao tại trường",
+                "Xem xen kẽ khi đang ngồi tự học ở nhà",
+                "Trong lúc đang ăn cơm / làm việc cá nhân",
+                "Buổi tối trước khi đi ngủ (nằm trên giường lướt điện thoại)"
+            ]
+        )
+        
         overtime_freq = st.selectbox(
-            "7. Tần suất bạn từng xem video ngắn lâu hơn dự định ban đầu:",
-            ["Rất thường xuyên", "Thường xuyên", "Thỉnh thoảng", "Hiếm khi / Chưa bao giờ"]
+            "Câu 7. Tần suất bạn từng xem video ngắn lâu hơn thời gian dự định ban đầu (ví dụ định lướt 5 phút nhưng thành hơn 1 tiếng)?",
+            [
+                "Rất thường xuyên (Hầu như ngày nào cũng bị)",
+                "Thường xuyên (Khoảng 3–4 lần/tuần)",
+                "Thỉnh thoảng (Khoảng 1–2 lần/tuần)",
+                "Hiếm khi hoặc không bao giờ"
+            ]
         )
-        brain_rot_know = st.radio(
-            "8. Bạn có biết đến thuật ngữ 'Brain Rot' (Não bỏng ngô) không?",
-            ["Hiểu rõ khái niệm và tác hại nhận thức", "Nghe thoáng qua trên mạng", "Hoàn toàn chưa từng nghe thấy"]
+        
+        brain_rot = st.selectbox(
+            "Câu 8. Bạn đã từng nghe hoặc biết đến thuật ngữ 'Brain Rot' (Não bỏng ngô) chưa?",
+            [
+                "Đã nghe và hiểu rõ tác hại của nó đối với sự tập trung",
+                "Từng nghe loáng thoáng trên mạng nhưng không hiểu rõ bản chất",
+                "Hoàn toàn chưa từng nghe thấy thuật ngữ này"
+            ]
         )
-        st.markdown('</div>', unsafe_allow_html=True)
+        
+        control_attempt = st.selectbox(
+            "Câu 9. Bạn đã từng chủ động tìm cách kiểm soát hoặc giảm bớt thời gian xem video ngắn chưa?",
+            [
+                "Đã từng thử nhiều lần nhưng đều thất bại (bị tái nghiện lại)",
+                "Đã từng thử và thành công một phần",
+                "Chưa bao giờ có ý định kiểm soát"
+            ]
+        )
+        
+        control_measures = st.multiselect(
+            "Câu 10. Nếu đã từng tìm cách hạn chế, bạn đã áp dụng biện pháp nào dưới đây? (Có thể chọn nhiều đáp án):",
+            [
+                "Cài đặt giới hạn thời gian ứng dụng (App Timer)",
+                "Gỡ cài đặt ứng dụng tạm thời",
+                "Để điện thoại ở phòng khác / xa bàn học",
+                "Nhờ người thân, bạn bè nhắc nhở",
+                "Chưa từng áp dụng biện pháp nào"
+            ]
+        )
+        
+        desire_change = st.selectbox(
+            "Câu 11. Bạn có mong muốn được hướng dẫn một phương pháp rèn luyện khoa học để giảm bớt sự phụ thuộc vào video ngắn không?",
+            ["Rất mong muốn", "Bình thường / Có cũng được", "Không có nhu cầu"]
+        )
 
-        st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.subheader("III. Đo lường sức bền chú ý & Hành vi trì hoãn học tập")
-        st.caption("Thang điểm: 1 = Rất hiếm khi | 5 = Rất thường xuyên")
+        st.markdown("---")
+        st.subheader("PHẦN III: ẢNH HƯỞNG ĐẾN KHẢ NĂNG TẬP TRUNG VÀ HÀNH VI TRÌ HOÃN")
+        st.caption("Đánh giá mức độ đồng ý theo thang điểm từ 1 đến 5 (1 = Hoàn toàn không đồng ý | 5 = Hoàn toàn đồng ý)")
         
-        p1 = st.slider("9. Bạn cảm thấy rất khó tập trung học bài hoặc giải bài tập quá 20 phút liên tục:", 1, 5, 3)
-        p2 = st.slider("10. Khi đang học, Bạn cảm thấy bồn chồn và luôn muốn với tay lấy điện thoại:", 1, 5, 3)
-        p3 = st.slider("11. Bạn thường trì hoãn việc làm bài tập về nhà ('nước đến chân mới nhảy'):", 1, 5, 3)
-        p4 = st.slider("12. Việc lướt clip làm gián đoạn khiến bạn tốn gấp đôi thời gian làm bài:", 1, 5, 3)
-        
-        attention_drop = st.selectbox(
-            "13. Đánh giá của bạn về khả năng tập trung hiện tại so với 1 năm trước:",
-            ["Thấy bị giảm sút rõ rệt", "Vẫn giữ nguyên", "Tốt hơn trước"]
-        )
-        control_tried = st.selectbox(
-            "14. Bạn đã từng thử kiểm soát hoặc giảm thời gian xem video ngắn chưa?",
-            ["Đã thử nhiều lần nhưng thất bại (tái nghiện)", "Thành công một phần", "Chưa bao giờ có ý định kiểm soát"]
-        )
-        st.markdown('</div>', unsafe_allow_html=True)
+        q12 = st.select_slider("Câu 12. Tôi cảm thấy rất khó khăn khi phải ngồi đọc tài liệu dài hoặc giải một bài tập khó liên tục quá 20 phút mà không cầm điện thoại:", options=[1, 2, 3, 4, 5], value=3)
+        q13 = st.select_slider("Câu 13. Trong lúc đang học bài, tôi thường xuyên bị bồn chồn và có thôi thúc muốn mở điện thoại ra xem video ngắn dở dang:", options=[1, 2, 3, 4, 5], value=3)
+        q14 = st.select_slider("Câu 14. So với năm học trước, tôi tự nhận thấy khả năng duy trì tập trung học tập của mình bị giảm sút rõ rệt:", options=[1, 2, 3, 4, 5], value=3)
+        q15 = st.select_slider("Câu 15. Việc lướt video ngắn làm gián đoạn buổi học, khiến tôi mất nhiều thời gian hơn để hoàn thành bài tập về nhà so với dự kiến:", options=[1, 2, 3, 4, 5], value=3)
+        q16 = st.select_slider("Câu 16. Tôi thường có thói quen trì hoãn, chần chừ bắt đầu làm bài tập cho đến khi sát hạn nộp (Deadline) mới vội vã làm:", options=[1, 2, 3, 4, 5], value=4)
+        q17 = st.select_slider("Câu 17. Việc xem video ngắn buổi tối khiến tôi thường xuyên đi ngủ muộn, khó ngủ sâu và cảm thấy mệt mỏi vào tiết học sáng hôm sau:", options=[1, 2, 3, 4, 5], value=3)
+        q18 = st.select_slider("Câu 18. Tôi thường có cảm giác mỏi mắt, nhức mỏi cổ vai gáy sau những lần xem video ngắn liên tục:", options=[1, 2, 3, 4, 5], value=3)
 
         submit_survey = st.form_submit_button("🚀 Gửi Phiếu Khảo Sát", type="primary", use_container_width=True)
 
@@ -175,17 +221,21 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
                 "Grade": grade,
                 "Class": classroom,
                 "Gender": gender,
-                "Platforms": "; ".join(platforms) if platforms else "Không chọn",
-                "Time_Spent": time_spent,
-                "View_Times": "; ".join(view_times) if view_times else "Không chọn",
-                "Overtime_Freq": overtime_freq,
-                "Brain_Rot_Awareness": brain_rot_know,
-                "Concentration_Difficulty": p1,
-                "Restless_Phone_Urge": p2,
-                "Procrastination": p3,
-                "Double_Study_Time": p4,
-                "Attention_Drop": attention_drop,
-                "Control_Attempt": control_tried
+                "Q4_Platforms": "; ".join(platforms) if platforms else "Không chọn",
+                "Q5_Time_Spent": time_spent,
+                "Q6_View_Times": "; ".join(view_times) if view_times else "Không chọn",
+                "Q7_Overtime_Freq": overtime_freq,
+                "Q8_Brain_Rot": brain_rot,
+                "Q9_Control_Attempt": control_attempt,
+                "Q10_Measures_Applied": "; ".join(control_measures) if control_measures else "Không chọn",
+                "Q11_Desire_Change": desire_change,
+                "Q12_Focus_Under_20m": q12,
+                "Q13_Restless_Phone": q13,
+                "Q14_Focus_Drop_1Year": q14,
+                "Q15_Study_Disrupted": q15,
+                "Q16_Procrastination": q16,
+                "Q17_Late_Sleep": q17,
+                "Q18_Eye_Neck_Strain": q18
             }
             df_new = pd.DataFrame([entry])
             if not os.path.exists(DATA_SURVEY_FILE):
@@ -193,20 +243,21 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
             else:
                 df_new.to_csv(DATA_SURVEY_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
             
-            st.success("🎉 Cảm ơn bạn! Phiếu khảo sát thực tế đã được lưu vào hệ thống thành công.")
+            st.success("🎉 Cảm ơn bạn! Phiếu khảo sát thực tế của bạn đã được ghi nhận thành công.")
             st.balloons()
 
 # ================= TAB 2: NHẬT KÝ CAN THIỆP 21 NGÀY =================
 elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
     st.subheader("📋 Nhật Ký Can Thiệp Hành Vi 21 Ngày")
-    st.info("Khu vực ghi nhận nhật ký hàng ngày của học sinh tham gia thực nghiệm 5 biện pháp.")
+    st.info("Khu vực ghi nhận nhật ký hàng ngày của 66 học sinh thực nghiệm áp dụng bộ 5 biện pháp hành vi.")
 
-    # Cột chọn lớp đặt ngoài form để đổi tức thời
     col_t1, col_t2 = st.columns(2)
     with col_t1:
         t_grade = st.selectbox("Khối:", list(CLASSES_BY_GRADE.keys()), key="tracker_grade")
     with col_t2:
         t_class = st.selectbox("Lớp:", CLASSES_BY_GRADE[t_grade], key="tracker_class")
+
+    st.markdown("---")
 
     with st.form("tracker_form"):
         col_c1, col_c2 = st.columns([3, 2])
@@ -215,21 +266,21 @@ elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
             day_num = st.number_input("Hôm nay là Ngày thứ mấy trong đợt can thiệp (1 - 21)?", min_value=1, max_value=21, value=1)
             
             st.markdown("##### 5 Biện pháp đã thực hiện hôm nay:")
-            m1 = st.checkbox("✅ Biện pháp 1: Cắt cơn sau 22h & Bật màn hình đen trắng (Grayscale)")
-            m2 = st.checkbox("✅ Biện pháp 2: Pomodoro ngược (Học tập trung 45p, chỉ thưởng tối đa 5p video ngắn)")
-            m3 = st.checkbox("✅ Biện pháp 3: Quy tắc '1 video - 1 hành động' (Ghi chép ý hay, bỏ qua clip nhảm)")
-            m4 = st.checkbox("✅ Biện pháp 4: Thang rèn luyện 15-25-40 & Dùng giấy nháp Brain Dump để trút xao nhãng")
-            m5 = st.checkbox("✅ Biện pháp 5: Học một màn hình (Để điện thoại cách xa 2m, chỉ mở 1 tab tài liệu)")
+            m1 = st.checkbox("✅ Biện pháp 1: Thử thách 21 ngày (Cắt cơn sau 22h & Bật màn hình đen trắng Grayscale)")
+            m2 = st.checkbox("✅ Biện pháp 2: Pomodoro ngược (Học tập trung 45p, chỉ thưởng tối đa 5p lướt clip)")
+            m3 = st.checkbox("✅ Biện pháp 3: Quy tắc '1 video - 1 hành động' (Ghi chép ý hay, bỏ qua clip rác)")
+            m4 = st.checkbox("✅ Biện pháp 4: Thang rèn luyện 15-25-40 & Sử dụng giấy nháp Brain Dump để trút xao nhãng")
+            m5 = st.checkbox("✅ Biện pháp 5: Chế độ học Một màn hình (Cất điện thoại xa 2m, chỉ mở 1 tab bài tập)")
 
             c_m1, c_m2 = st.columns(2)
             with c_m1:
-                minutes_today = st.number_input("Số phút xem video ngắn hôm nay (Screen Time):", min_value=0, max_value=600, value=60)
+                minutes_today = st.number_input("Số phút xem video ngắn hôm nay (theo Screen Time):", min_value=0, max_value=600, value=45)
             with c_m2:
-                focus_today = st.number_input("Thời gian tập trung liên tục lâu nhất (phút):", min_value=0, max_value=180, value=25)
+                focus_today = st.number_input("Thời gian tập trung liên tục lâu nhất (phút):", min_value=0, max_value=180, value=30)
         
         with col_c2:
             st.image("https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500&auto=format&fit=crop&q=80",
-                     caption="Rèn luyện thói quen học tập sâu và kiểm soát thiết bị số", use_container_width=True)
+                     caption="Rèn luyện thói quen học tập sâu và tối ưu hóa sự tập trung", use_container_width=True)
 
         submit_track = st.form_submit_button("Lưu Tiến Độ Hôm Nay", type="primary", use_container_width=True)
 
@@ -290,7 +341,7 @@ else:
                     st.markdown("---")
                     col_g1, col_g2 = st.columns(2)
                     with col_g1:
-                        df_time_real = df_s["Time_Spent"].value_counts().reset_index()
+                        df_time_real = df_s["Q5_Time_Spent"].value_counts().reset_index()
                         df_time_real.columns = ["Thời lượng", "Số học sinh"]
                         fig_time = px.bar(
                             df_time_real, x="Thời lượng", y="Số học sinh", text="Số học sinh",
@@ -301,14 +352,14 @@ else:
                         st.plotly_chart(fig_time, use_container_width=True)
 
                     with col_g2:
-                        df_att_real = df_s["Attention_Drop"].value_counts().reset_index()
-                        df_att_real.columns = ["Đánh giá", "Số lượng"]
-                        fig_att = px.pie(
-                            df_att_real, names="Đánh giá", values="Số lượng",
-                            title="Tự đánh giá khả năng tập trung so với 1 năm trước",
+                        df_proc_real = df_s["Q16_Procrastination"].value_counts().reset_index()
+                        df_proc_real.columns = ["Mức độ đồng ý", "Số lượng"]
+                        fig_proc = px.pie(
+                            df_proc_real, names="Mức độ đồng ý", values="Số lượng",
+                            title="Mức độ trì hoãn làm bài tập (Câu 16: Nước đến chân mới nhảy)",
                             hole=0.4
                         )
-                        st.plotly_chart(fig_att, use_container_width=True)
+                        st.plotly_chart(fig_proc, use_container_width=True)
 
                     st.markdown("---")
                     st.markdown("##### 📋 Bảng dữ liệu khảo sát chi tiết:")
