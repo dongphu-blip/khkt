@@ -12,36 +12,40 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. Tinh chỉnh CSS thẩm mỹ cao
 st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-    html, body, [class*="css"] {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .header-box {
-        background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #06B6D4 100%);
-        padding: 24px;
+    <div style="
+        background: #ffffff;
+        padding: 26px 20px;
         border-radius: 14px;
-        color: white;
-        margin-top: 15px;
+        text-align: center;
+        border: 2px solid #e0e7ff;
+        border-top: 5px solid #2563eb;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         margin-bottom: 25px;
-        box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.3);
-    }
-    .section-card {
-        background-color: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    }
-    div.stButton > button:first-child {
-        border-radius: 10px;
-        font-weight: 600;
-        height: 48px;
-    }
-    </style>
+    ">
+        <p style="margin: 0; font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 1px; text-transform: uppercase;">
+            SỞ GIÁO DỤC VÀ ĐÀO TẠO ĐỒNG NAI — TRƯỜNG THPT ĐỒNG PHÚ
+        </p>
+        <h2 style="margin: 8px 0; font-size: 22px; font-weight: 800; color: #1e3a8a; line-height: 1.4;">
+            DỰ ÁN KHOA HỌC KỸ THUẬT CẤP TRƯỜNG NĂM HỌC 2025 - 2026
+        </h2>
+        <div style="
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 6px 0 12px 0;
+            border: 1px dashed #93c5fd;
+        ">
+            🎯 Nghiên Cứu Tác Động Của Video Ngắn Đến Sức Bền Chú Ý & Tính Trì Hoãn
+        </div>
+        <p style="margin: 0; font-size: 13.5px; color: #475569;">
+            Cổng tiếp nhận phiếu khảo sát thực trạng & ghi nhận nhật ký can thiệp hành vi 21 ngày
+        </p>
+    </div>
 """, unsafe_allow_html=True)
 
 DATA_SURVEY_FILE = "khao_sat_thuc_te_hs.csv"
