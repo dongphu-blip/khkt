@@ -57,29 +57,7 @@ CLASSES_BY_GRADE = {
     "Khối 11": [f"11TN{i}" for i in range(1, 5)] + [f"11XH{i}" for i in range(1, 8)],
     "Khối 12": [f"12TN{i}" for i in range(1, 7)] + [f"12XH{i}" for i in range(1, 7)]
 }
-# Banner nhận diện chuẩn trường THPT Đồng Phú (Thiết kế phẳng hiện đại)
-st.markdown("""
-    <div style="
-        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
-        padding: 30px 25px;
-        border-radius: 16px;
-        color: white;
-        text-align: center;
-        box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.35);
-        margin-bottom: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-    ">
-        <div style="font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #93c5fd; margin-bottom: 6px;">
-            SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ ĐỒNG NAI • TRƯỜNG THPT ĐỒNG PHÚ
-        </div>
-        <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">
-            🧠 DỰ ÁN KHOA HỌC KỸ THUẬT: NGHIÊN CỨU TÁC ĐỘNG CỦA VIDEO NGẮN
-        </h1>
-        <p style="margin: 10px auto 0 auto; max-width: 850px; font-size: 15px; color: #e2e8f0; line-height: 1.5;">
-            Đo lường mức độ ảnh hưởng đến khả năng chú ý và thói quen trì hoãn học tập • Hệ thống thu thập & phân tích số liệu thực tế học sinh THPT Đồng Phú
-        </p>
-    </div>
-""", unsafe_allow_html=True)
+
 # --- CHÈN HÌNH ẢNH / LOGO VÀO THANH ĐIỀU HƯỚNG (SIDEBAR) ---
 st.sidebar.image(
     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", # Icon học đường & công nghệ sắc nét
