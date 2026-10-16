@@ -11,43 +11,66 @@ st.set_page_config(
     page_icon="🎓",
     layout="wide"
 )
-
 st.markdown("""
     <div style="
-        background: #ffffff;
-        padding: 26px 20px;
-        border-radius: 14px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #06b6d4 100%);
+        padding: 30px 24px;
+        border-radius: 16px;
+        color: white;
         text-align: center;
-        border: 2px solid #e0e7ff;
-        border-top: 5px solid #2563eb;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.35);
         margin-bottom: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
     ">
-        <p style="margin: 0; font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 1px; text-transform: uppercase;">
-            SỞ GIÁO DỤC VÀ ĐÀO TẠO ĐỒNG NAI — TRƯỜNG THPT ĐỒNG PHÚ
-        </p>
-        <h2 style="margin: 8px 0; font-size: 22px; font-weight: 800; color: #1e3a8a; line-height: 1.4;">
-            DỰ ÁN KHOA HỌC KỸ THUẬT CẤP TRƯỜNG NĂM HỌC 2025 - 2026
-        </h2>
         <div style="
-            background: #eff6ff;
-            color: #1d4ed8;
-            font-size: 16px;
-            font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 8px;
             display: inline-block;
-            margin: 6px 0 12px 0;
-            border: 1px dashed #93c5fd;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #dbeafe;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         ">
-            🎯 Nghiên Cứu Tác Động Của Video Ngắn Đến Sức Bền Chú Ý & Tính Trì Hoãn
+            🏛️ SỞ GD&ĐT ĐỒNG NAI • TRƯỜNG THPT ĐỒNG PHÚ
         </div>
-        <p style="margin: 0; font-size: 13.5px; color: #475569;">
-            Cổng tiếp nhận phiếu khảo sát thực trạng & ghi nhận nhật ký can thiệp hành vi 21 ngày
+        <h1 style="
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.35;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        ">
+            🧠 NGHIÊN CỨU TÁC ĐỘNG CỦA THÓI QUEN TIÊU THỤ VIDEO NGẮN<br>
+            <span style="color: #67e8f9; font-size: 21px;">ĐẾN KHẢ NĂNG DUY TRÌ CHÚ Ý VÀ HÀNH VI TRÌ HOÃN HỌC TẬP</span>
+        </h1>
+        <p style="
+            margin: 12px auto 16px auto;
+            max-width: 820px;
+            font-size: 14px;
+            color: #f1f5f9;
+            line-height: 1.5;
+            opacity: 0.95;
+        ">
+            Hệ thống số hóa thu thập dữ liệu thực nghiệm & đánh giá hiệu quả giải pháp can thiệp hành vi 21 ngày
         </p>
+        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+            <span style="background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;">
+                📊 Lĩnh vực: Khoa học Xã hội & Hành vi
+            </span>
+            <span style="background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;">
+                🏫 Khách thể: Học sinh THPT Đồng Phú
+            </span>
+            <span style="background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;">
+                ⚡ Nền tảng: Python • Streamlit • GitHub
+            </span>
+        </div>
     </div>
 """, unsafe_allow_html=True)
-
 DATA_SURVEY_FILE = "khao_sat_thuc_te_hs.csv"
 DATA_TRACKER_FILE = "can_thiep_thuc_te_21_ngay.csv"
 RESEARCH_PWD = "thptdongphu2026"
