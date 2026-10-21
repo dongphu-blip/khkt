@@ -266,10 +266,10 @@ elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
             day_num = st.number_input("Hôm nay là Ngày thứ mấy trong đợt can thiệp (1 - 21)?", min_value=1, max_value=21, value=1)
             
             st.markdown("##### 5 Biện pháp đã thực hiện hôm nay:")
-            m1 = st.checkbox("✅ Biện pháp 1: Thử thách 21 ngày (Cắt cơn sau 22h & Bật màn hình đen trắng Grayscale)")
-            m2 = st.checkbox("✅ Biện pháp 2: Pomodoro ngược (Học tập trung 45p, chỉ thưởng tối đa 5p lướt clip)")
-            m3 = st.checkbox("✅ Biện pháp 3: Quy tắc '1 video - 1 hành động' (Ghi chép ý hay, bỏ qua clip rác)")
-            m4 = st.checkbox("✅ Biện pháp 4: Thang rèn luyện 15-25-40 & Sử dụng giấy nháp Brain Dump để trút xao nhãng")
+            m1 = st.checkbox("✅ Biện pháp 1: Thử thách 21 ngày (Cắt cơn sau 22h & Bật màn hình đen trắng)")
+            m2 = st.checkbox("✅ Biện pháp 2: Thay thế bằng những hoạt động có ích (Đọc sách, nghe podcast, học kỹ năng mới để lấp đầy thời gian rảnh)")
+            m3 = st.checkbox("✅ Biện pháp 3: Giới hạn thời gian sử dụng mạng xã hội (Đặt giới hạn xem mỗi ngày, giảm dần thời lượng và tắt thông báo)")
+            m4 = st.checkbox("✅ Biện pháp 4: Xây dựng thời gian biểu hợp lý (Phân chia rõ ràng việc học, nghỉ ngơi, ưu tiên hoạt động thể thao, trò chuyện ngoài đời thực)")
             m5 = st.checkbox("✅ Biện pháp 5: Chế độ học Một màn hình (Cất điện thoại xa 2m, chỉ mở 1 tab bài tập)")
 
             c_m1, c_m2 = st.columns(2)
