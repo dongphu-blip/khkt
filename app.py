@@ -7,15 +7,15 @@ import plotly.graph_objects as go
 
 # ================= CẤU HÌNH LIÊN KẾT GOOGLE SHEETS =================
 # 1. Dán link Web App Apps Script ở Bước 1 vào đây:
-GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/THAY_URL_APPS_SCRIPT_CUA_BAN/exec"
+GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbx-1kWOUyz0qx2bVowXmR_1mw4vyOuqWNPF5upkzht1klmM_PS9oLciSyVkoUDMGHpg0Q/exec"
 
 # 2. Dán ID bảng tính Google Sheets vào đây:
-SHEET_ID = "THAY_ID_GOOGLE_SHEETS_CUA_BAN"
+SHEET_ID = "https://docs.google.com/spreadsheets/d/1drefI8b0W66pLgMRyYuKw0Ixxpul42pv1AUqfHuHBJE/edit?usp=sharing"
 
 URL_CSV_KHAOSAT = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Khao_Sat"
 URL_CSV_NHATKY = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Nhat_Ky_21_Ngay"
 
-RESEARCH_PWD = "thptdongphu2026"
+RESEARCH_PWD = "dongphu2026"
 
 # 1. Cấu hình giao diện
 st.set_page_config(
