@@ -4,7 +4,17 @@ import os
 from datetime import datetime
 import plotly.express as px
 import plotly.graph_objects as go
+# ================= CẤU HÌNH LIÊN KẾT GOOGLE SHEETS =================
+# 1. Dán link Web App Apps Script ở Bước 1 vào đây:
+GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/THAY_URL_APPS_SCRIPT_CUA_BAN/exec"
 
+# 2. Dán ID bảng tính Google Sheets vào đây:
+SHEET_ID = "THAY_ID_GOOGLE_SHEETS_CUA_BAN"
+
+URL_CSV_KHAOSAT = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Khao_Sat"
+URL_CSV_NHATKY = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Nhat_Ky_21_Ngay"
+
+RESEARCH_PWD = "dongphu2026"
 # 1. Cấu hình giao diện chuẩn
 st.set_page_config(
     page_title="Nghiên Cứu Video Ngắn & Sức Bền Chú Ý | THPT Đồng Phú",
