@@ -24,6 +24,11 @@ st.markdown("""
         font-weight: 600;
         height: 48px;
     }
+    div[data-testid="stCheckbox"] label p {
+        white-space: normal !important;
+        word-break: break-word !important;
+        line-height: 1.5 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
