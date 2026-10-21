@@ -272,14 +272,14 @@ elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
             
             st.markdown("##### 5 Biện pháp đã thực hiện hôm nay:")
             m1 = st.checkbox("✅ Biện pháp 1: Thử thách 21 ngày (Cắt cơn sau 22h & Bật màn hình đen trắng)")
-            m2 = st.checkbox("✅ Biện pháp 2: Thay thế bằng những hoạt động có ích (Đọc sách, nghe podcast, học kỹ năng mới để lấp đầy thời gian rảnh)")
-            m3 = st.checkbox("✅ Biện pháp 3: Giới hạn thời gian sử dụng mạng xã hội (Đặt giới hạn xem mỗi ngày, giảm dần thời lượng và tắt thông báo)")
-            m4 = st.checkbox("✅ Biện pháp 4: Xây dựng thời gian biểu hợp lý (Phân chia rõ ràng việc học, nghỉ ngơi, ưu tiên hoạt động thể thao, trò chuyện ngoài đời thực)")
-            m5 = st.checkbox("✅ Biện pháp 5: Chế độ học Một màn hình (Cất điện thoại xa 2m, chỉ mở 1 tab bài tập)")
+            m2 = st.checkbox("✅ Biện pháp 2: Thay thế bằng hoạt động phục hồi nhận thức (Đọc sách, nghe podcast thay vì tiêu thụ clip vi mô")
+            m3 = st.checkbox("✅ Biện pháp 3: Thiết lập rào cản kỹ thuật số (Đặt App Timer, giảm dần thời lượng & tắt thông báo đẩy)")
+            m4 = st.checkbox("✅ Biện pháp 4: Kỹ thuật chia khối thời gian & Chống trì hoãn (Phân bổ nhịp học - nghỉ, ưu tiên vận động thực tế)")
+            m5 = st.checkbox("✅ Biện pháp 5: Chế độ học Một màn hình (Cất điện thoại xa 2m, chỉ mở 1 tab tài liệu để triệt tiêu xao nhãng)")
 
             c_m1, c_m2 = st.columns(2)
             with c_m1:
-                minutes_today = st.number_input("Số phút xem video ngắn hôm nay (theo Screen Time):", min_value=0, max_value=600, value=45)
+                minutes_today = st.number_input("Số phút xem video ngắn hôm nay:", min_value=0, max_value=600, value=45)
             with c_m2:
                 focus_today = st.number_input("Thời gian tập trung liên tục lâu nhất (phút):", min_value=0, max_value=180, value=30)
         
