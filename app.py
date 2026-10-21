@@ -10,8 +10,7 @@ import plotly.graph_objects as go
 GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbx-1kWOUyz0qx2bVowXmR_1mw4vyOuqWNPF5upkzht1klmM_PS9oLciSyVkoUDMGHpg0Q/exec"
 
 # 2. Dán ID bảng tính Google Sheets vào đây:
-SHEET_ID = "https://docs.google.com/spreadsheets/d/1drefI8b0W66pLgMRyYuKw0Ixxpul42pv1AUqfHuHBJE/edit?usp=sharing"
-
+SHEET_ID = "1drefI8b0W66pLgMRyYuKw0Ixxpul42pv1AUqfHuHBJE"
 URL_CSV_KHAOSAT = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Khao_Sat"
 URL_CSV_NHATKY = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Nhat_Ky_21_Ngay"
 
