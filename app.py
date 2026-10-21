@@ -1,16 +1,15 @@
 import streamlit as st
 import pandas as pd
 import requests
+import json
 from datetime import datetime
 import plotly.express as px
 import plotly.graph_objects as go
 
 # ================= CẤU HÌNH LIÊN KẾT GOOGLE SHEETS =================
-# 1. Dán link Web App Apps Script ở Bước 1 vào đây:
 GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbx-1kWOUyz0qx2bVowXmR_1mw4vyOuqWNPF5upkzht1klmM_PS9oLciSyVkoUDMGHpg0Q/exec"
-
-# 2. Dán ID bảng tính Google Sheets vào đây:
 SHEET_ID = "1drefI8b0W66pLgMRyYuKw0Ixxpul42pv1AUqfHuHBJE"
+
 URL_CSV_KHAOSAT = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Khao_Sat"
 URL_CSV_NHATKY = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Nhat_Ky_21_Ngay"
 
@@ -224,7 +223,7 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
 
         submit_survey = st.form_submit_button("🚀 Gửi Phiếu Khảo Sát", type="primary", use_container_width=True)
 
-      if submit_survey:
+        if submit_survey:
             row_data = [
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 grade, classroom, gender,
@@ -239,15 +238,15 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
             
             with st.spinner("Đang lưu dữ liệu lên Google Sheets..."):
                 try:
+                    payload = json.dumps({"sheet_name": "Khao_Sat", "row_data": row_data})
                     res = requests.post(
                         GOOGLE_SHEET_API_URL, 
-                        json={"sheet_name": "Khao_Sat", "row_data": row_data},
-                        headers={"Content-Type": "application/json"},
+                        data=payload,
+                        headers={"Content-Type": "text/plain;charset=utf-8"},
                         allow_redirects=True,
                         timeout=15
                     )
                     
-                    # Chấp nhận cả 200 (thành công) và 302 (mã chuyển hướng chuẩn của Google Script)
                     if res.status_code in [200, 302] or "success" in res.text:
                         st.success("🎉 Cảm ơn bạn! Phiếu khảo sát đã được lưu vĩnh viễn trên Google Sheets.")
                         st.balloons()
@@ -255,7 +254,6 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
                         st.error(f"Google Script trả về mã {res.status_code}: {res.text[:150]}")
                         
                 except requests.exceptions.Timeout:
-                    # Nếu mạng trường học phản hồi chậm nhưng lệnh đã bắn lên Google Drive thành công
                     st.success("🎉 Phiếu khảo sát đã được gửi lên hệ thống Google Sheets thành công!")
                     st.balloons()
                 except Exception as e:
@@ -312,19 +310,26 @@ elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
                     sum([m1, m2, m3, m4, m5]),
                     minutes_today, focus_today
                 ]
-                try:
-                    res = requests.post(
-                        GOOGLE_SHEET_API_URL, 
-                        json={"sheet_name": "Nhat_Ky_21_Ngay", "row_data": row_track},
-                        timeout=10
-                    )
-                    if res.status_code == 200:
-                        st.success(f"Đã lưu tiến độ ngày thứ {day_num} của học sinh {student_code} lên Google Sheets thành công!")
+                with st.spinner("Đang lưu nhật ký lên Google Sheets..."):
+                    try:
+                        payload_track = json.dumps({"sheet_name": "Nhat_Ky_21_Ngay", "row_data": row_track})
+                        res = requests.post(
+                            GOOGLE_SHEET_API_URL, 
+                            data=payload_track,
+                            headers={"Content-Type": "text/plain;charset=utf-8"},
+                            allow_redirects=True,
+                            timeout=15
+                        )
+                        if res.status_code in [200, 302] or "success" in res.text:
+                            st.success(f"Đã lưu tiến độ ngày thứ {day_num} của học sinh {student_code} lên Google Sheets thành công!")
+                            st.balloons()
+                        else:
+                            st.error(f"Lỗi khi kết nối Google Sheets (Mã {res.status_code}).")
+                    except requests.exceptions.Timeout:
+                        st.success(f"Đã lưu tiến độ ngày thứ {day_num} lên Google Sheets thành công!")
                         st.balloons()
-                    else:
-                        st.error("Lỗi khi kết nối Google Sheets.")
-                except Exception as e:
-                    st.error(f"Lỗi gửi dữ liệu: {e}")
+                    except Exception as e:
+                        st.error(f"Lỗi gửi dữ liệu: {e}")
 
 # ================= TAB 3: DASHBOARD CHO BAN NGHIÊN CỨU =================
 else:
