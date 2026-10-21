@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
-import os
+import requests
 from datetime import datetime
 import plotly.express as px
 import plotly.graph_objects as go
+
 # ================= CẤU HÌNH LIÊN KẾT GOOGLE SHEETS =================
 # 1. Dán link Web App Apps Script ở Bước 1 vào đây:
 GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/THAY_URL_APPS_SCRIPT_CUA_BAN/exec"
@@ -14,15 +15,16 @@ SHEET_ID = "THAY_ID_GOOGLE_SHEETS_CUA_BAN"
 URL_CSV_KHAOSAT = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Khao_Sat"
 URL_CSV_NHATKY = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Nhat_Ky_21_Ngay"
 
-RESEARCH_PWD = "dongphu2026"
-# 1. Cấu hình giao diện chuẩn
+RESEARCH_PWD = "thptdongphu2026"
+
+# 1. Cấu hình giao diện
 st.set_page_config(
     page_title="Nghiên Cứu Video Ngắn & Sức Bền Chú Ý | THPT Đồng Phú",
     page_icon="🎓",
     layout="wide"
 )
 
-# 2. Tinh chỉnh CSS thẩm mỹ cao
+# 2. CSS thẩm mỹ, tự xuống dòng checkbox, không bị cắt chữ
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
@@ -42,10 +44,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-DATA_SURVEY_FILE = "khao_sat_thuc_te_hs.csv"
-DATA_TRACKER_FILE = "can_thiep_thuc_te_21_ngay.csv"
-RESEARCH_PWD = "dongphu2026"
-
 # Danh mục 33 lớp chuẩn xác theo phân ban TN và XH
 CLASSES_BY_GRADE = {
     "Khối 10": [f"10TN{i}" for i in range(1, 6)] + [f"10XH{i}" for i in range(1, 6)],
@@ -54,10 +52,7 @@ CLASSES_BY_GRADE = {
 }
 
 # --- THANH ĐIỀU HƯỚNG BÊN TRÁI (SIDEBAR) ---
-st.sidebar.image(
-    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-    width=90
-)
+st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3135/3135715.png", width=90)
 st.sidebar.markdown("""
     <div style="margin-bottom: 15px; margin-top: 5px;">
         <h4 style="margin: 0; color: #1e3a8a; font-weight: 700; font-size: 17px;">TRƯỜNG THPT ĐỒNG PHÚ</h4>
@@ -88,7 +83,7 @@ st.markdown("""
             background: rgba(255, 255, 255, 0.15);
             padding: 4px 14px;
             border-radius: 20px;
-            font-size: 20px;
+            font-size: 12px;
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -126,15 +121,15 @@ st.markdown("""
                 🏫 Khách thể: Học sinh THPT Đồng Phú
             </span>
             <span style="background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;">
-                ⚡ Nền tảng: Python • Streamlit • GitHub
+                ⚡ Nền tảng: Python • Streamlit • Google Sheets
             </span>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
-# ================= TAB 1: PHIẾU KHẢO SÁT HỌC SINH =================
+# ================= TAB 1: PHIẾU KHẢO SÁT =================
 if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
-    st.info("🔒 Toàn bộ câu trả lời của các bạn đều được ẩn danh hoàn toàn và chỉ sử dụng cho mục đích thống kê khoa học. Rất mong các bạn dành 5 phút trả lời thật khách quan, chính xác!")
+    st.info("🔒 Toàn bộ câu trả lời của các bạn đều được ẩn danh hoàn toàn và lưu trực tiếp lên cơ sở dữ liệu nghiên cứu khoa học. Rất mong các bạn trả lời thật khách quan, chính xác!")
 
     st.subheader("PHẦN I: THÔNG TIN CHUNG")
     c1, c2, c3 = st.columns(3)
@@ -231,35 +226,31 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
         submit_survey = st.form_submit_button("🚀 Gửi Phiếu Khảo Sát", type="primary", use_container_width=True)
 
         if submit_survey:
-            entry = {
-                "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "Grade": grade,
-                "Class": classroom,
-                "Gender": gender,
-                "Q4_Platforms": "; ".join(platforms) if platforms else "Không chọn",
-                "Q5_Time_Spent": time_spent,
-                "Q6_View_Times": "; ".join(view_times) if view_times else "Không chọn",
-                "Q7_Overtime_Freq": overtime_freq,
-                "Q8_Brain_Rot": brain_rot,
-                "Q9_Control_Attempt": control_attempt,
-                "Q10_Measures_Applied": "; ".join(control_measures) if control_measures else "Không chọn",
-                "Q11_Desire_Change": desire_change,
-                "Q12_Focus_Under_20m": q12,
-                "Q13_Restless_Phone": q13,
-                "Q14_Focus_Drop_1Year": q14,
-                "Q15_Study_Disrupted": q15,
-                "Q16_Procrastination": q16,
-                "Q17_Late_Sleep": q17,
-                "Q18_Eye_Neck_Strain": q18
-            }
-            df_new = pd.DataFrame([entry])
-            if not os.path.exists(DATA_SURVEY_FILE):
-                df_new.to_csv(DATA_SURVEY_FILE, index=False, encoding="utf-8-sig")
-            else:
-                df_new.to_csv(DATA_SURVEY_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
+            row_data = [
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                grade, classroom, gender,
+                "; ".join(platforms) if platforms else "Không chọn",
+                time_spent,
+                "; ".join(view_times) if view_times else "Không chọn",
+                overtime_freq, brain_rot, control_attempt,
+                "; ".join(control_measures) if control_measures else "Không chọn",
+                desire_change,
+                q12, q13, q14, q15, q16, q17, q18
+            ]
             
-            st.success("🎉 Cảm ơn bạn! Phiếu khảo sát thực tế của bạn đã được ghi nhận thành công.")
-            st.balloons()
+            try:
+                res = requests.post(
+                    GOOGLE_SHEET_API_URL, 
+                    json={"sheet_name": "Khao_Sat", "row_data": row_data},
+                    timeout=10
+                )
+                if res.status_code == 200:
+                    st.success("🎉 Cảm ơn bạn! Phiếu khảo sát đã được lưu vĩnh viễn trên Google Sheets.")
+                    st.balloons()
+                else:
+                    st.error("Lỗi khi kết nối Google Sheets, vui lòng thử lại.")
+            except Exception as e:
+                st.error(f"Lỗi gửi dữ liệu: {e}")
 
 # ================= TAB 2: NHẬT KÝ CAN THIỆP 21 NGÀY =================
 elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
@@ -275,50 +266,56 @@ elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
     st.markdown("---")
 
     with st.form("tracker_form"):
-        col_c1, col_c2 = st.columns([3, 2])
-        with col_c1:
+        c_hs1, c_hs2 = st.columns(2)
+        with c_hs1:
             student_code = st.text_input("Mã số học sinh (hoặc Tên viết tắt):", placeholder="Ví dụ: 10TN1_01")
+        with c_hs2:
             day_num = st.number_input("Hôm nay là Ngày thứ mấy trong đợt can thiệp (1 - 21)?", min_value=1, max_value=21, value=1)
-            
-            st.markdown("##### 5 Biện pháp đã thực hiện hôm nay:")
-            m1 = st.checkbox("✅ Biện pháp 1: Thử thách 21 ngày (Cắt cơn sau 22h & Bật màn hình đen trắng)")
-            m2 = st.checkbox("✅ Biện pháp 2: Thay thế bằng hoạt động phục hồi nhận thức (Đọc sách, nghe podcast thay vì tiêu thụ clip vi mô")
-            m3 = st.checkbox("✅ Biện pháp 3: Thiết lập rào cản kỹ thuật số (Đặt App Timer, giảm dần thời lượng & tắt thông báo đẩy)")
-            m4 = st.checkbox("✅ Biện pháp 4: Kỹ thuật chia khối thời gian & Chống trì hoãn (Phân bổ nhịp học - nghỉ, ưu tiên vận động thực tế)")
-            m5 = st.checkbox("✅ Biện pháp 5: Chế độ học Một màn hình (Cất điện thoại xa 2m, chỉ mở 1 tab tài liệu để triệt tiêu xao nhãng)")
-
-            c_m1, c_m2 = st.columns(2)
-            with c_m1:
-                minutes_today = st.number_input("Số phút xem video ngắn hôm nay:", min_value=0, max_value=600, value=45)
-            with c_m2:
-                focus_today = st.number_input("Thời gian tập trung liên tục lâu nhất (phút):", min_value=0, max_value=180, value=30)
         
-        with col_c2:
-            st.image("https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500&auto=format&fit=crop&q=80",
-                     caption="Rèn luyện thói quen học tập sâu và tối ưu hóa sự tập trung", use_container_width=True)
+        st.markdown("---")
+        st.markdown("##### 5 Biện pháp can thiệp đã thực hiện hôm nay:")
+        
+        m1 = st.checkbox("✅ Biện pháp 1: Thử thách 21 ngày (Cắt cơn sau 22h & Màn hình đen trắng Grayscale)")
+        m2 = st.checkbox("✅ Biện pháp 2: Thay thế bằng hoạt động có ích (Đọc sách, nghe podcast, học kỹ năng mới)")
+        m3 = st.checkbox("✅ Biện pháp 3: Giới hạn sử dụng mạng xã hội (Đặt App Timer, giảm dần thời lượng & tắt thông báo)")
+        m4 = st.checkbox("✅ Biện pháp 4: Xây dựng thời gian biểu hợp lý (Cân bằng học - nghỉ, ưu tiên thể thao & giao tiếp thực tế)")
+        m5 = st.checkbox("✅ Biện pháp 5: Chế độ học Một màn hình (Cất điện thoại xa 2m, chỉ mở 1 tab bài tập)")
+        
+        st.markdown("---")
+        st.markdown("##### Kết quả đo lường trong ngày:")
+        c_m1, c_m2 = st.columns(2)
+        with c_m1:
+            minutes_today = st.number_input("Thời gian xem video ngắn hôm nay (phút):", min_value=0, max_value=600, value=30)
+        with c_m2:
+            focus_today = st.number_input("Thời gian tập trung liên tục lâu nhất (phút):", min_value=0, max_value=180, value=35)
 
-        submit_track = st.form_submit_button("Lưu Tiến Độ Hôm Nay", type="primary", use_container_width=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        submit_track = st.form_submit_button("🚀 Lưu Tiến Độ Hôm Nay", type="primary", use_container_width=True)
 
         if submit_track:
             if not student_code.strip():
                 st.warning("Vui lòng nhập Mã số học sinh để hệ thống đối chiếu theo dõi.")
             else:
-                track_entry = {
-                    "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "Student_Code": student_code.strip(),
-                    "Grade": t_grade,
-                    "Class": t_class,
-                    "Day": day_num,
-                    "Measures_Done_Count": sum([m1, m2, m3, m4, m5]),
-                    "Minutes_Spent": minutes_today,
-                    "Max_Focus_Minutes": focus_today
-                }
-                df_track = pd.DataFrame([track_entry])
-                if not os.path.exists(DATA_TRACKER_FILE):
-                    df_track.to_csv(DATA_TRACKER_FILE, index=False, encoding="utf-8-sig")
-                else:
-                    df_track.to_csv(DATA_TRACKER_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
-                st.success(f"Đã lưu tiến độ ngày thứ {day_num} của học sinh {student_code} thành công!")
+                row_track = [
+                    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    student_code.strip(),
+                    t_grade, t_class, day_num,
+                    sum([m1, m2, m3, m4, m5]),
+                    minutes_today, focus_today
+                ]
+                try:
+                    res = requests.post(
+                        GOOGLE_SHEET_API_URL, 
+                        json={"sheet_name": "Nhat_Ky_21_Ngay", "row_data": row_track},
+                        timeout=10
+                    )
+                    if res.status_code == 200:
+                        st.success(f"Đã lưu tiến độ ngày thứ {day_num} của học sinh {student_code} lên Google Sheets thành công!")
+                        st.balloons()
+                    else:
+                        st.error("Lỗi khi kết nối Google Sheets.")
+                except Exception as e:
+                    st.error(f"Lỗi gửi dữ liệu: {e}")
 
 # ================= TAB 3: DASHBOARD CHO BAN NGHIÊN CỨU =================
 else:
@@ -328,34 +325,33 @@ else:
     if pwd == RESEARCH_PWD:
         tab_a, tab_b = st.tabs(["📈 Phân Tích Thực Trạng Khảo Sát", "🎯 Theo Dõi Can Thiệp 21 Ngày"])
 
-        # --- TAB A: KHẢO SÁT THỰC TRẠNG ---
+        # --- TAB A: KHẢO SÁT THỰC TRẠNG (Đọc trực tiếp từ Google Sheets) ---
         with tab_a:
-            if not os.path.exists(DATA_SURVEY_FILE):
-                st.warning("Hiện tại chưa có học sinh nào gửi phiếu khảo sát. Hãy gửi link hoặc mã QR để học sinh tham gia!")
-            else:
-                try:
-                    df_s = pd.read_csv(DATA_SURVEY_FILE, encoding='utf-8-sig', on_bad_lines='skip')
-                except Exception:
-                    df_s = pd.read_csv(DATA_SURVEY_FILE, encoding='utf-8', errors='ignore', on_bad_lines='skip')
-
+            try:
+                df_s = pd.read_csv(URL_CSV_KHAOSAT, on_bad_lines='skip')
                 total_hs = len(df_s)
-                if total_hs == 0:
-                    st.warning("Tập dữ liệu khảo sát hiện đang trống.")
-                else:
-                    st.markdown(f"#### 1. Tổng số phiếu đã thu thập thực tế: **{total_hs} học sinh**")
-                    k10 = len(df_s[df_s["Grade"] == "Khối 10"])
-                    k11 = len(df_s[df_s["Grade"] == "Khối 11"])
-                    k12 = len(df_s[df_s["Grade"] == "Khối 12"])
+            except Exception:
+                df_s = pd.DataFrame()
+                total_hs = 0
 
-                    c1, c2, c3, c4 = st.columns(4)
-                    c1.metric("Tổng phiếu thu được", total_hs)
-                    c2.metric("Khối 10", f"{k10} ({k10/total_hs*100:.1f}%)" if total_hs else "0")
-                    c3.metric("Khối 11", f"{k11} ({k11/total_hs*100:.1f}%)" if total_hs else "0")
-                    c4.metric("Khối 12", f"{k12} ({k12/total_hs*100:.1f}%)" if total_hs else "0")
+            if total_hs == 0:
+                st.warning("Hiện tại chưa có học sinh nào gửi phiếu khảo sát hoặc chưa thể đọc Google Sheets.")
+            else:
+                st.markdown(f"#### 1. Tổng số phiếu đã thu thập thực tế: **{total_hs} học sinh**")
+                k10 = len(df_s[df_s["Grade"] == "Khối 10"]) if "Grade" in df_s.columns else 0
+                k11 = len(df_s[df_s["Grade"] == "Khối 11"]) if "Grade" in df_s.columns else 0
+                k12 = len(df_s[df_s["Grade"] == "Khối 12"]) if "Grade" in df_s.columns else 0
 
-                    st.markdown("---")
-                    col_g1, col_g2 = st.columns(2)
-                    with col_g1:
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("Tổng phiếu thu được", total_hs)
+                c2.metric("Khối 10", f"{k10} ({k10/total_hs*100:.1f}%)" if total_hs else "0")
+                c3.metric("Khối 11", f"{k11} ({k11/total_hs*100:.1f}%)" if total_hs else "0")
+                c4.metric("Khối 12", f"{k12} ({k12/total_hs*100:.1f}%)" if total_hs else "0")
+
+                st.markdown("---")
+                col_g1, col_g2 = st.columns(2)
+                with col_g1:
+                    if "Q5_Time_Spent" in df_s.columns:
                         df_time_real = df_s["Q5_Time_Spent"].value_counts().reset_index()
                         df_time_real.columns = ["Thời lượng", "Số học sinh"]
                         fig_time = px.bar(
@@ -366,7 +362,8 @@ else:
                         fig_time.update_traces(textposition='outside')
                         st.plotly_chart(fig_time, use_container_width=True)
 
-                    with col_g2:
+                with col_g2:
+                    if "Q16_Procrastination" in df_s.columns:
                         df_proc_real = df_s["Q16_Procrastination"].value_counts().reset_index()
                         df_proc_real.columns = ["Mức độ đồng ý", "Số lượng"]
                         fig_proc = px.pie(
@@ -376,33 +373,32 @@ else:
                         )
                         st.plotly_chart(fig_proc, use_container_width=True)
 
-                    st.markdown("---")
-                    st.markdown("##### 📋 Bảng dữ liệu khảo sát chi tiết:")
-                    st.dataframe(df_s, use_container_width=True, hide_index=True)
+                st.markdown("---")
+                st.markdown("##### 📋 Bảng dữ liệu khảo sát chi tiết từ Google Sheets:")
+                st.dataframe(df_s, use_container_width=True, hide_index=True)
 
-                    csv_down = df_s.to_csv(index=False, encoding="utf-8-sig").encode("utf-8-sig")
-                    st.download_button(
-                        "📥 Tải Toàn Bộ File Dữ Liệu Khảo Sát Thực Tế (.CSV)",
-                        data=csv_down,
-                        file_name=f"Khao_Sat_Thuc_Te_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
-                        mime="text/csv"
-                    )
+                csv_down = df_s.to_csv(index=False, encoding="utf-8-sig").encode("utf-8-sig")
+                st.download_button(
+                    "📥 Tải Toàn Bộ File Dữ Liệu Khảo Sát Thực Tế (.CSV)",
+                    data=csv_down,
+                    file_name=f"Khao_Sat_GoogleSheet_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
+                    mime="text/csv"
+                )
 
         # --- TAB B: KẾT QUẢ THỰC NGHIỆM 21 NGÀY ---
         with tab_b:
-            if not os.path.exists(DATA_TRACKER_FILE):
-                st.warning("Chưa có học sinh nào lưu nhật ký can thiệp 21 ngày.")
-            else:
-                try:
-                    df_t = pd.read_csv(DATA_TRACKER_FILE, encoding='utf-8-sig', on_bad_lines='skip')
-                except Exception:
-                    df_t = pd.read_csv(DATA_TRACKER_FILE, encoding='utf-8', errors='ignore', on_bad_lines='skip')
-
+            try:
+                df_t = pd.read_csv(URL_CSV_NHATKY, on_bad_lines='skip')
                 total_logs = len(df_t)
-                if total_logs == 0:
-                    st.warning("Nhật ký can thiệp hiện đang trống.")
-                else:
-                    st.markdown(f"#### Tổng số lượt ghi nhật ký can thiệp: **{total_logs} lượt**")
+            except Exception:
+                df_t = pd.DataFrame()
+                total_logs = 0
+
+            if total_logs == 0:
+                st.warning("Chưa có học sinh nào lưu nhật ký can thiệp 21 ngày trên Google Sheets.")
+            else:
+                st.markdown(f"#### Tổng số lượt ghi nhật ký can thiệp: **{total_logs} lượt**")
+                if "Day" in df_t.columns and "Minutes_Spent" in df_t.columns and "Max_Focus_Minutes" in df_t.columns:
                     trend_df = df_t.groupby("Day")[["Minutes_Spent", "Max_Focus_Minutes"]].mean().reset_index()
 
                     fig_trend = go.Figure()
@@ -411,16 +407,16 @@ else:
                     fig_trend.update_layout(title="Xu hướng thay đổi Thời gian xem vs Sức bền tập trung qua các ngày can thiệp", xaxis_title="Ngày can thiệp (1 - 21)", yaxis_title="Số phút")
                     st.plotly_chart(fig_trend, use_container_width=True)
 
-                    st.markdown("##### 📋 Chi tiết nhật ký thực nghiệm:")
-                    st.dataframe(df_t, use_container_width=True, hide_index=True)
+                st.markdown("##### 📋 Chi tiết nhật ký thực nghiệm từ Google Sheets:")
+                st.dataframe(df_t, use_container_width=True, hide_index=True)
 
-                    csv_track = df_t.to_csv(index=False, encoding="utf-8-sig").encode("utf-8-sig")
-                    st.download_button(
-                        "📥 Tải Nhật Ký Can Thiệp Thực Tế (.CSV)",
-                        data=csv_track,
-                        file_name=f"Nhat_Ky_Can_Thiep_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
-                        mime="text/csv"
-                    )
+                csv_track = df_t.to_csv(index=False, encoding="utf-8-sig").encode("utf-8-sig")
+                st.download_button(
+                    "📥 Tải Nhật Ký Can Thiệp Thực Tế (.CSV)",
+                    data=csv_track,
+                    file_name=f"Nhat_Ky_Can_Thiep_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
+                    mime="text/csv"
+                )
 
     elif pwd != "":
         st.error("Mật khẩu không chính xác.")
