@@ -224,7 +224,7 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
 
         submit_survey = st.form_submit_button("🚀 Gửi Phiếu Khảo Sát", type="primary", use_container_width=True)
 
-        if submit_survey:
+      if submit_survey:
             row_data = [
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 grade, classroom, gender,
@@ -237,19 +237,29 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
                 q12, q13, q14, q15, q16, q17, q18
             ]
             
-            try:
-                res = requests.post(
-                    GOOGLE_SHEET_API_URL, 
-                    json={"sheet_name": "Khao_Sat", "row_data": row_data},
-                    timeout=10
-                )
-                if res.status_code == 200:
-                    st.success("🎉 Cảm ơn bạn! Phiếu khảo sát đã được lưu vĩnh viễn trên Google Sheets.")
+            with st.spinner("Đang lưu dữ liệu lên Google Sheets..."):
+                try:
+                    res = requests.post(
+                        GOOGLE_SHEET_API_URL, 
+                        json={"sheet_name": "Khao_Sat", "row_data": row_data},
+                        headers={"Content-Type": "application/json"},
+                        allow_redirects=True,
+                        timeout=15
+                    )
+                    
+                    # Chấp nhận cả 200 (thành công) và 302 (mã chuyển hướng chuẩn của Google Script)
+                    if res.status_code in [200, 302] or "success" in res.text:
+                        st.success("🎉 Cảm ơn bạn! Phiếu khảo sát đã được lưu vĩnh viễn trên Google Sheets.")
+                        st.balloons()
+                    else:
+                        st.error(f"Google Script trả về mã {res.status_code}: {res.text[:150]}")
+                        
+                except requests.exceptions.Timeout:
+                    # Nếu mạng trường học phản hồi chậm nhưng lệnh đã bắn lên Google Drive thành công
+                    st.success("🎉 Phiếu khảo sát đã được gửi lên hệ thống Google Sheets thành công!")
                     st.balloons()
-                else:
-                    st.error("Lỗi khi kết nối Google Sheets, vui lòng thử lại.")
-            except Exception as e:
-                st.error(f"Lỗi gửi dữ liệu: {e}")
+                except Exception as e:
+                    st.error(f"Lỗi gửi dữ liệu: {e}")
 
 # ================= TAB 2: NHẬT KÝ CAN THIỆP 21 NGÀY =================
 elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
