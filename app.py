@@ -2,9 +2,14 @@ import streamlit as st
 import pandas as pd
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import plotly.express as px
 import plotly.graph_objects as go
+
+# ================= HÀM LẤY GIỜ VIỆT NAM CHUẨN XÁC (GMT+7) =================
+def get_vietnam_now():
+    tz_vn = timezone(timedelta(hours=7))
+    return datetime.now(tz_vn).strftime("%Y-%m-%d %H:%M:%S")
 
 # ================= CẤU HÌNH LIÊN KẾT GOOGLE SHEETS =================
 GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbx-1kWOUyz0qx2bVowXmR_1mw4vyOuqWNPF5upkzht1klmM_PS9oLciSyVkoUDMGHpg0Q/exec"
@@ -224,8 +229,9 @@ if menu == "📝 1. Phiếu Khảo Sát Thực Trạng (Học Sinh)":
         submit_survey = st.form_submit_button("🚀 Gửi Phiếu Khảo Sát", type="primary", use_container_width=True)
 
         if submit_survey:
+            # SỬ DỤNG HÀM get_vietnam_now() ĐỂ LẤY ĐÚNG GIỜ VIỆT NAM (GMT+7)
             row_data = [
-                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                get_vietnam_now(),
                 grade, classroom, gender,
                 "; ".join(platforms) if platforms else "Không chọn",
                 time_spent,
@@ -303,8 +309,9 @@ elif menu == "🎯 2. Nhật Ký Can Thiệp 21 Ngày (Nhóm Thực Nghiệm)":
             if not student_code.strip():
                 st.warning("Vui lòng nhập Mã số học sinh để hệ thống đối chiếu theo dõi.")
             else:
+                # SỬ DỤNG HÀM get_vietnam_now() ĐỂ LẤY ĐÚNG GIỜ VIỆT NAM (GMT+7)
                 row_track = [
-                    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    get_vietnam_now(),
                     student_code.strip(),
                     t_grade, t_class, day_num,
                     sum([m1, m2, m3, m4, m5]),
@@ -395,7 +402,7 @@ else:
                 st.download_button(
                     "📥 Tải Toàn Bộ File Dữ Liệu Khảo Sát Thực Tế (.CSV)",
                     data=csv_down,
-                    file_name=f"Khao_Sat_GoogleSheet_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
+                    file_name=f"Khao_Sat_GoogleSheet_{get_vietnam_now().replace(':', '').replace(' ', '_').replace('-', '')}.csv",
                     mime="text/csv"
                 )
 
@@ -428,7 +435,7 @@ else:
                 st.download_button(
                     "📥 Tải Nhật Ký Can Thiệp Thực Tế (.CSV)",
                     data=csv_track,
-                    file_name=f"Nhat_Ky_Can_Thiep_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
+                    file_name=f"Nhat_Ky_Can_Thiep_{get_vietnam_now().replace(':', '').replace(' ', '_').replace('-', '')}.csv",
                     mime="text/csv"
                 )
 
