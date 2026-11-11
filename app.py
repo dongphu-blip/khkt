@@ -22,10 +22,12 @@ RESEARCH_PWD = "dongphu2026"
 
 # 1. Cấu hình giao diện
 st.set_page_config(
-    page_title="Nghiên Cứu Video Ngắn & Sức Bền Chú Ý | THPT Đồng Phú",
+    page_title="STEM 2026-2027 | THPT Đồng Phú",
     page_icon="🎓",
     layout="wide"
 )
+
+
 
 # 2. CSS thẩm mỹ, tự xuống dòng checkbox, không bị cắt chữ
 st.markdown("""
@@ -55,11 +57,11 @@ CLASSES_BY_GRADE = {
 }
 
 # --- THANH ĐIỀU HƯỚNG BÊN TRÁI (SIDEBAR) ---
-st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3135/3135715.png", width=90)
+st.sidebar.image("banner_dongphu.png", width=270)
 st.sidebar.markdown("""
     <div style="margin-bottom: 15px; margin-top: 5px;">
         <h4 style="margin: 0; color: #1e3a8a; font-weight: 700; font-size: 17px;">TRƯỜNG THPT ĐỒNG PHÚ</h4>
-        <p style="margin: 2px 0 0 0; font-size: 12px; color: #64748b;">Nghiên Cứu KHKT 2026 - 2027</p>
+        <p style="margin: 2px 0 0 0; font-size: 12px; color: #64748b;">STEM 2026-2027</p>
     </div>
 """, unsafe_allow_html=True)
 
